@@ -89,9 +89,8 @@ client.on('messageCreate', (messageCreate) => {
     var str = messageCreate.content
     
     if (containsBinary(str)){
-        str = extractBinary(str)
-        var out = binToText(str);
-        messageCreate.reply(`I translated that binary for you :) It says:\n${out}`)
+        var out = binToTextFull(str);
+        messageCreate.reply(`I translated that message for you :) It says:\n${out}`)
     }
 })
 
@@ -115,6 +114,25 @@ function binToText(bin) {
     if(str==="\u0000"){return "Something went wrong! Sorry :/"}
     return str
 
+}
+
+function binToTextFull(text) {
+    var output_text = ''
+    for(var i = 0; i < text.length; i++){
+        var char = text[i]
+        if(!((char==='0') || (char==='1'))){
+            output_text+= char
+        }
+        else if (!containsBinary(text.substring(i,i+8))){
+            output_text+= char
+        }
+        else{
+            output_text+= binToText(extractBinary(text.substring(i, i+8)))
+            i+=8
+        }
+    }
+    return output_text
+    
 }
 
 function containsBinary(text) {
@@ -143,7 +161,7 @@ function extractBinary(text) {
                 for(var y = i-7; y <= i; y++){
                     str += text[y]
                 }
-                str += ' '
+                return str
             }
         }
         else{
