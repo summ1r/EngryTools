@@ -2,3 +2,11 @@
 package.json
 package-lock.json
 node_modules
+cypress.env.json
+cypress.json
+
+cypress/fixtures
+cypress/integration/1-getting-started
+cypress/integration/2-advanced-examples
+cypress/plugins
+cypress/support
